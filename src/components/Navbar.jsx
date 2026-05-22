@@ -1,88 +1,92 @@
 import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Menu, X, Heart, Home, LogIn, UserPlus, Search, User } from 'lucide-react'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoggedIn] = useState(false)
+
+  const toggleMenu = () => setIsOpen(!isOpen)
 
   return (
-    <nav className="bg-white/95 backdrop-blur shadow-lg sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-teal-700 rounded-full flex items-center justify-center">
-              <span className="text-white font-black text-lg">🏥</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-black text-teal-700">Health Care</h1>
-              <p className="text-xs text-slate-500">خدمات طبية</p>
-            </div>
-          </div>
+          <Link to="/" className="flex items-center gap-2 font-bold text-xl hover:text-red-100 transition">
+            <Heart className="w-6 h-6" fill="currentColor" />
+            <span>HealthCare</span>
+          </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-slate-700 hover:text-teal-700 transition">
+          <div className="hidden md:flex items-center gap-6">
+            <Link to="/" className="flex items-center gap-1 hover:text-red-100 transition">
+              <Home className="w-4 h-4" />
               الرئيسية
-            </a>
-            <a href="#services" className="text-slate-700 hover:text-teal-700 transition">
+            </Link>
+            <Link to="/services" className="flex items-center gap-1 hover:text-red-100 transition">
+              <Search className="w-4 h-4" />
               الخدمات
-            </a>
-            <a href="#nurses" className="text-slate-700 hover:text-teal-700 transition">
-              الممرضون
-            </a>
-            <a href="#contact" className="text-slate-700 hover:text-teal-700 transition">
-              تواصل معنا
-            </a>
-          </div>
+            </Link>
 
-          {/* Buttons */}
-          <div className="hidden md:flex items-center gap-3">
-            <a
-              href="https://wa.me/201007729848"
-              className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-green-600 transition"
-            >
-              واتساب
-            </a>
-            <button className="bg-slate-100 text-slate-700 px-4 py-2 rounded-full text-sm font-bold hover:bg-slate-200 transition">
-              EN
-            </button>
+            {isLoggedIn ? (
+              <>
+                <Link to="/profile" className="flex items-center gap-1 hover:text-red-100 transition">
+                  <User className="w-4 h-4" />
+                  ملفي الشخصي
+                </Link>
+                <button className="bg-red-800 px-4 py-2 rounded-lg hover:bg-red-900 transition">
+                  تسجيل الخروج
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="flex items-center gap-1 hover:text-red-100 transition">
+                  <LogIn className="w-4 h-4" />
+                  دخول
+                </Link>
+                <Link to="/register" className="bg-red-800 px-4 py-2 rounded-lg hover:bg-red-900 transition flex items-center gap-1">
+                  <UserPlus className="w-4 h-4" />
+                  تسجيل
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          <button onClick={toggleMenu} className="md:hidden">
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden pb-4 space-y-2">
-            <a href="/" className="block text-slate-700 hover:text-teal-700 py-2">
+            <Link to="/" className="block px-4 py-2 hover:bg-red-500 rounded transition">
               الرئيسية
-            </a>
-            <a href="#services" className="block text-slate-700 hover:text-teal-700 py-2">
+            </Link>
+            <Link to="/services" className="block px-4 py-2 hover:bg-red-500 rounded transition">
               الخدمات
-            </a>
-            <a href="#nurses" className="block text-slate-700 hover:text-teal-700 py-2">
-              الممرضون
-            </a>
-            <a href="#contact" className="block text-slate-700 hover:text-teal-700 py-2">
-              تواصل معنا
-            </a>
-            <div className="flex gap-2 pt-2">
-              <a
-                href="https://wa.me/201007729848"
-                className="flex-1 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold text-center"
-              >
-                واتساب
-              </a>
-              <button className="flex-1 bg-slate-100 text-slate-700 px-4 py-2 rounded-full text-sm font-bold">
-                EN
-              </button>
-            </div>
+            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link to="/profile" className="block px-4 py-2 hover:bg-red-500 rounded transition">
+                  ملفي الشخصي
+                </Link>
+                <button className="w-full text-right px-4 py-2 hover:bg-red-500 rounded transition">
+                  تسجيل الخروج
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="block px-4 py-2 hover:bg-red-500 rounded transition">
+                  دخول
+                </Link>
+                <Link to="/register" className="block px-4 py-2 hover:bg-red-500 rounded transition">
+                  تسجيل
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
